@@ -1,0 +1,13 @@
+{
+  "name": "express-skeleton-foundation5",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ncp": "~0.4.2",
+    "mkdirp": "~0.3.5",
+    "commander": "~2.1.0"
+  }
+}

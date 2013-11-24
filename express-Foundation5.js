@@ -9,7 +9,8 @@ var program = require('commander')
   , pkg = require('../package.json')
   , version = pkg.version
   , os = require('os')
-  , fs = require('fs');
+  , fs = require('fs')
+  , ncp = require('ncp');
 
 // CLI
 
@@ -310,6 +311,35 @@ function createApplicationAt(path) {
       }
     });
 
+    // Load the Foundation 5 files
+    var source = __dirname + '/foundation5' ;
+    fs.readdir(source, function(err, files) {
+      for (var i=0; i<files.length; i++) {
+        switch (files[i]) {
+          case 'js':
+            ncp(source + '/' + files[i], path + '/public/' + '/js', ncpDone);
+            break;
+          case 'imgs':
+            ncp(source + '/' + files[i], path + '/public/' + '/imgs', ncpDone);
+            break;
+          case 'styles':
+            ncp(source + '/' + files[i], path + '/public/' + '/styles', ncpDone);
+            break;
+          case 'index.html':
+            ncp(source + '/' + files[i], path + '/index-foundation5.html', ncpDone);
+            break;
+          default:
+        }
+      }
+    });
+    function ncpDone(err) {
+      if (err) {
+        console.log('ncp error');
+        return console.error(err);
+      }
+    }
+
+
     // CSS Engine support
     switch (program.css) {
       case 'less':
@@ -324,7 +354,7 @@ function createApplicationAt(path) {
 
     // Session support
     app = app.replace('{sess}', program.sessions
-      ? eol + 'app.use(express.cookieParser(\'your secret here\'));' + eol + 'app.use(express.cookieSession({' + eol + 'key: \'__RequestValidationToken\',' + eol + 'secret: \'groupBlog_$&$_Beginnings\',' + eol + 'cookie: {httpOnly: true, expires: 0, path: \'/\'}' + eol + '}));'
+      ? eol + 'app.use(express.cookieParser(\'aint nobody got time for that\'));' + eol + 'app.use(express.session({' + eol + '  key: \'aint nobody got time for that\',' + eol + '  secret: \'' + path + '_\&_key board cats\',' + eol + '  cookie: {httpOnly: true, expires: 0, path: \'/\'}' + eol + '}));'
       : '');
 
     // Template support
